@@ -26,12 +26,14 @@ import android.view.View;
 import berlin.volders.badger.BadgeShape;
 import berlin.volders.badger.Badger;
 import berlin.volders.badger.CountBadge;
+import berlin.volders.badger.DotBadger;
 
 public class BadgerActivity extends AppCompatActivity {
 
     CountBadge.Factory ovalFactory;
     CountBadge.Factory squareFactory;
     CountBadge.Factory circleFactory;
+    DotBadger.Factory dotFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class BadgerActivity extends AppCompatActivity {
         ovalFactory = new CountBadge.Factory(this, BadgeShape.oval(1f, 2f, Gravity.BOTTOM));
         squareFactory = new CountBadge.Factory(this, BadgeShape.square(1f, Gravity.NO_GRAVITY, .5f));
         circleFactory = new CountBadge.Factory(this, BadgeShape.circle(.5f, Gravity.END | Gravity.TOP));
+        dotFactory = new DotBadger.Factory(this, BadgeShape.circle(.3f, Gravity.END | Gravity.TOP));
     }
 
     @Override
@@ -48,6 +51,7 @@ public class BadgerActivity extends AppCompatActivity {
         Badger.sett(menu.findItem(R.id.action_oval), ovalFactory).setCount(0);
         Badger.sett(menu.findItem(R.id.action_square), squareFactory).setCount(0);
         Badger.sett(menu.findItem(R.id.action_circle), circleFactory).setCount(0);
+        Badger.sett(menu.findItem(R.id.action_dot), dotFactory).show();
         return true;
     }
 
@@ -61,6 +65,14 @@ public class BadgerActivity extends AppCompatActivity {
                 //noinspection ConstantConditions
                 CountBadge badge = Badger.sett(item, null);
                 badge.setCount(badge.getCount() + 1);
+                return true;
+            case R.id.action_dot:
+                DotBadger dotBadge = Badger.sett(item, null);
+                if (dotBadge.getVisible()) {
+                    dotBadge.hide();
+                } else {
+                    dotBadge.show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
